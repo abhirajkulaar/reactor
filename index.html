@@ -1,1 +1,222 @@
-hello peeps!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Sound Tiles</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .tiles-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            width: 100%;
+            height: 100%;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .tile {
+            position: relative;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .tile-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .tile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .tile:active {
+            transform: scale(0.98);
+        }
+
+        /* Individual tile colors and backgrounds */
+        .tile-1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .tile-1::before {
+            background-image: url('assets/img/talpade.png');
+            opacity: 1;
+        }
+
+        .tile-2 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .tile-2::before {
+            background-image: url('assets/img/eww.jpeg');
+            opacity: 1;
+        }
+
+        .tile-3 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .tile-3::before {
+            background-image: url('assets/img/gay.jpeg');
+            opacity: 1;
+        }
+
+        .tile-4 {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        .tile-4::before {
+            background-image: url('assets/img/hasde.png');
+            opacity: 1;
+        }
+
+        .tile-5 {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .tile-5::before {
+            background-image: url('assets/img/muslim.jpeg');
+            opacity: 1;
+        }
+
+        .tile-6 {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+        .tile-6::before {
+            background-image: url('assets/img/qt.png');
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="tiles-container">
+        <button class="tile tile-1" data-sound="1">
+            <div class="tile-content">1</div>
+        </button>
+        <button class="tile tile-2" data-sound="2">
+            <div class="tile-content">2</div>
+        </button>
+        <button class="tile tile-3" data-sound="3">
+            <div class="tile-content">3</div>
+        </button>
+        <button class="tile tile-4" data-sound="4">
+            <div class="tile-content">4</div>
+        </button>
+        <button class="tile tile-5" data-sound="5">
+            <div class="tile-content">5</div>
+        </button>
+        <button class="tile tile-6" data-sound="6">
+            <div class="tile-content">6</div>
+        </button>
+    </div>
+
+    <script>
+        // Create audio context for generating sounds
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Preload audio files
+        const talpadeAudio = new Audio('assets/mp4/talpade.wav');
+        const ewAudio = new Audio('assets/mp4/ew.wav');
+        const gayAudio = new Audio('assets/mp4/gay.wav');
+        const hasdeAudio = new Audio('assets/mp4/hasde.wav');
+        const muslimAudio = new Audio('assets/mp4/muslim.wav');
+        const qtAudio = new Audio('assets/mp4/qt.mp3');
+
+        // Store all audio files in an array for easy pausing
+        const allAudioFiles = [talpadeAudio, ewAudio, gayAudio, hasdeAudio, muslimAudio, qtAudio];
+
+        // Function to pause all audio files
+        function pauseAllAudio() {
+            allAudioFiles.forEach(audio => {
+                if (!audio.paused) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            });
+        }
+
+        // Function to play a sound for each tile
+        function playSound(tileNumber) {
+            // Pause all currently playing audio
+            pauseAllAudio();
+            
+            let audioToPlay;
+            
+            switch(tileNumber) {
+                case 1:
+                    audioToPlay = talpadeAudio;
+                    break;
+                case 2:
+                    audioToPlay = ewAudio;
+                    break;
+                case 3:
+                    audioToPlay = gayAudio;
+                    break;
+                case 4:
+                    audioToPlay = hasdeAudio;
+                    break;
+                case 5:
+                    audioToPlay = muslimAudio;
+                    break;
+                case 6:
+                    audioToPlay = qtAudio;
+                    break;
+            }
+            
+            if (audioToPlay) {
+                audioToPlay.currentTime = 0;
+                audioToPlay.play().catch(err => console.error('Error playing audio:', err));
+            }
+        }
+
+        // Add click event listeners to all tiles
+        document.querySelectorAll('.tile').forEach(tile => {
+            tile.addEventListener('click', function() {
+                const tileNumber = parseInt(this.getAttribute('data-sound'));
+                playSound(tileNumber);
+            });
+        });
+
+        // Resume audio context on first user interaction (required by browsers)
+        document.addEventListener('click', function() {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>
