@@ -109,7 +109,7 @@
             background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
         }
         .tile-5::before {
-            background-image: url('assets/img/muslim.jpeg');
+            background-image: url('assets/img/sofia.png');
             opacity: 1;
         }
 
@@ -153,11 +153,11 @@
         const ewAudio = new Audio('assets/mp4/ew.wav');
         const gayAudio = new Audio('assets/mp4/gay.wav');
         const hasdeAudio = new Audio('assets/mp4/hasde.wav');
-        const muslimAudio = new Audio('assets/mp4/muslim.wav');
+        const sofiaAudio = new Audio('assets/mp4/sofia.mp3');
         const qtAudio = new Audio('assets/mp4/qt.mp3');
 
         // Store all audio files in an array for easy pausing
-        const allAudioFiles = [talpadeAudio, ewAudio, gayAudio, hasdeAudio, muslimAudio, qtAudio];
+        const allAudioFiles = [talpadeAudio, ewAudio, gayAudio, hasdeAudio, sofiaAudio, qtAudio];
 
         // Function to pause all audio files
         function pauseAllAudio() {
@@ -190,7 +190,7 @@
                     audioToPlay = hasdeAudio;
                     break;
                 case 5:
-                    audioToPlay = muslimAudio;
+                    audioToPlay = sofiaAudio;
                     break;
                 case 6:
                     audioToPlay = qtAudio;
